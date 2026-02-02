@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>❤️ Marina & Fabio ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at top, #6a0f1b, #120406);
+    overflow: hidden;
+    font-family: 'Georgia', serif;
+    color: #f6eaea;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    text-align: center;
+    z-index: 5;
+    padding: 20px;
+}
+
+h1 {
+    font-size: clamp(2.2em, 6vw, 3em);
+    text-shadow: 0 0 25px rgba(255, 180, 180, 0.9);
+    margin-bottom: 20px;
+}
+
+img {
+    width: min(70vw, 260px);
+    height: min(70vw, 260px);
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 0 45px rgba(255, 215, 150, 0.8);
+    margin-bottom: 30px;
+}
+
+/* BUTTON AREA */
+.buttons {
+    position: relative;
+    width: 320px;
+    height: 200px;
+    margin: 0 auto;
+}
+
+/* BUTTONS */
+button {
+    padding: 15px 38px;
+    font-size: 1.3em;
+    border-radius: 18px;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    white-space: nowrap;
+}
+
+#yes {
+    background: linear-gradient(135deg, #b01630, #6a0f1b);
+    color: #fff;
+    left: 50%;
+    bottom: 10px;
+    transform: translateX(-120%);
+    box-shadow: 0 0 30px rgba(255, 100, 150, 1);
+}
+
+#no {
+    background: linear-gradient(135deg, #333, #111);
+    color: #fff;
+}
+
+/* MESSAGE */
+.message {
+    position: fixed;
+    bottom: 18%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.75);
+    color: #fff;
+    padding: 14px 22px;
+    border-radius: 16px;
+    font-size: 1.1em;
+    box-shadow: 0 0 25px rgba(255, 120, 150, 0.8);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 10;
+}
+.message.show { opacity: 1; }
+
+/* PARTICLES */
+.star, .glitter {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.star {
+    width: 6px;
+    height: 6px;
+    background: gold;
+    border-radius: 50%;
+    box-shadow: 0 0 12px gold;
+    animation: fall 4s linear infinite;
+}
+
+.glitter {
+    width: 4px;
+    height: 4px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    box-shadow: 0 0 10px white;
+    animation: sparkle 3s linear infinite;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-10vh); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translateY(110vh); opacity: 0; }
+}
+
+@keyframes sparkle {
+    0% { transform: scale(0); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: scale(1.6); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Hey Krasavica ✨</h1>
+    <h1>Willst du mein Valentine sein? ❤️</h1>
+
+    <img src="image.png" alt="Wir zwei">
+
+    <div class="buttons">
+        <button id="yes" onclick="yesClicked()">JA 💎</button>
+        <button id="no">NEIN</button>
+    </div>
+</div>
+
+<script>
+const noBtn = document.getElementById("no");
+const btnArea = document.querySelector(".buttons");
+
+let dodgeCount = 0;
+
+/* Startposition: sichtbar & zentriert */
+let posX = 190;
+let posY = 40;
+
+noBtn.style.left = posX + "px";
+noBtn.style.top  = posY + "px";
+
+function showMessage(text) {
+    const msg = document.createElement("div");
+    msg.className = "message";
+    msg.textContent = text;
+    document.body.appendChild(msg);
+
+    setTimeout(() => msg.classList.add("show"), 30);
+    setTimeout(() => {
+        msg.classList.remove("show");
+        setTimeout(() => msg.remove(), 400);
+    }, 2500);
+}
+
+function dodge() {
+    dodgeCount++;
+
+    const dx = (Math.random() * 2 - 1) * 120;
+    const dy = (Math.random() * 2 - 1) * 60;
+
+    posX += dx;
+    posY += dy;
+
+    const maxX = btnArea.clientWidth - noBtn.offsetWidth;
+    const maxY = btnArea.clientHeight - noBtn.offsetHeight;
+
+    posX = Math.max(0, Math.min(maxX, posX));
+    posY = Math.max(0, Math.min(maxY, posY));
+
+    noBtn.style.left = posX + "px";
+    noBtn.style.top  = posY + "px";
+
+    if (dodgeCount === 3) {
+        showMessage("😈 Du kannst deinem Schicksal nicht ausweichen… drück endlich auf JA.");
+    }
+}
+
+noBtn.addEventListener("mouseenter", dodge);
+noBtn.addEventListener("touchstart", dodge);
+
+function yesClicked() {
+    document.body.innerHTML = `
+        <div style="
+            color:white;
+            text-align:center;
+            font-size:2.8em;
+            text-shadow:0 0 40px gold;
+        ">
+            💖 JAAAA 💖<br><br>
+            ✨ Nacho und ich, wir freuen uns! ✨
+        </div>
+    `;
+}
+
+/* EFFECTS */
+setInterval(() => {
+    const s = document.createElement("div");
+    s.className = "star";
+    s.style.left = Math.random() * innerWidth + "px";
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 6000);
+}, 120);
+
+setInterval(() => {
+    const g = document.createElement("div");
+    g.className = "glitter";
+    g.style.left = Math.random() * innerWidth + "px";
+    g.style.top = Math.random() * innerHeight + "px";
+    document.body.appendChild(g);
+    setTimeout(() => g.remove(), 4000);
+}, 70);
+</script>
+
+</body>
+</html>
