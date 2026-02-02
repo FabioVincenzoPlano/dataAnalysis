@@ -9,7 +9,7 @@
 body {
     margin: 0;
     height: 100vh;
-    background: radial-gradient(circle at top, #6a0f1b, #120406);
+    background: radial-gradient(circle at top, #7a1020, #120406);
     overflow: hidden;
     font-family: 'Georgia', serif;
     color: #f6eaea;
@@ -26,7 +26,7 @@ body {
 
 h1 {
     font-size: clamp(2.2em, 6vw, 3em);
-    text-shadow: 0 0 25px rgba(255, 180, 180, 0.9);
+    text-shadow: 0 0 35px rgba(255, 190, 190, 1);
     margin-bottom: 20px;
 }
 
@@ -34,16 +34,16 @@ img {
     width: min(70vw, 260px);
     height: min(70vw, 260px);
     object-fit: cover;
-    border-radius: 20px;
-    box-shadow: 0 0 45px rgba(255, 215, 150, 0.8);
-    margin-bottom: 30px;
+    border-radius: 22px;
+    box-shadow: 0 0 55px rgba(255, 215, 150, 0.9);
+    margin-bottom: 35px;
 }
 
-/* BUTTON AREA */
+/* BUTTON ROW */
 .buttons {
     position: relative;
-    width: 320px;
-    height: 200px;
+    width: 420px;
+    height: 90px;
     margin: 0 auto;
 }
 
@@ -51,25 +51,28 @@ img {
 button {
     padding: 15px 38px;
     font-size: 1.3em;
-    border-radius: 18px;
+    border-radius: 20px;
     border: none;
     cursor: pointer;
     position: absolute;
     white-space: nowrap;
 }
 
+/* JA */
 #yes {
-    background: linear-gradient(135deg, #b01630, #6a0f1b);
+    background: linear-gradient(135deg, #c01735, #7a1020);
     color: #fff;
-    left: 50%;
-    bottom: 10px;
-    transform: translateX(-120%);
-    box-shadow: 0 0 30px rgba(255, 100, 150, 1);
+    left: 60px;
+    top: 15px;
+    box-shadow: 0 0 35px rgba(255, 120, 160, 1);
 }
 
+/* NEIN */
 #no {
     background: linear-gradient(135deg, #333, #111);
     color: #fff;
+    left: 240px;
+    top: 15px;
 }
 
 /* MESSAGE */
@@ -83,36 +86,45 @@ button {
     padding: 14px 22px;
     border-radius: 16px;
     font-size: 1.1em;
-    box-shadow: 0 0 25px rgba(255, 120, 150, 0.8);
+    box-shadow: 0 0 30px rgba(255, 140, 170, 1);
     opacity: 0;
     transition: opacity 0.4s ease;
     z-index: 10;
 }
 .message.show { opacity: 1; }
 
-/* PARTICLES */
-.star, .glitter {
+/* ✨✨✨ GLAM PARTICLES ✨✨✨ */
+.sparkle, .gold, .glam {
     position: absolute;
     pointer-events: none;
-    opacity: 0;
+    border-radius: 50%;
 }
 
-.star {
+/* Gold Glitter */
+.gold {
     width: 6px;
     height: 6px;
     background: gold;
-    border-radius: 50%;
-    box-shadow: 0 0 12px gold;
-    animation: fall 4s linear infinite;
+    box-shadow: 0 0 18px gold;
+    animation: fall 5s linear infinite;
 }
 
-.glitter {
+/* White Sparkles */
+.sparkle {
     width: 4px;
     height: 4px;
-    background: rgba(255,255,255,0.9);
-    border-radius: 50%;
-    box-shadow: 0 0 10px white;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 0 14px white;
     animation: sparkle 3s linear infinite;
+}
+
+/* Glam Dots */
+.glam {
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 210, 140, 0.8);
+    box-shadow: 0 0 25px rgba(255,210,140,1);
+    animation: float 6s ease-in-out infinite;
 }
 
 @keyframes fall {
@@ -125,6 +137,12 @@ button {
     0% { transform: scale(0); opacity: 0; }
     50% { opacity: 1; }
     100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes float {
+    0% { transform: translateY(0); opacity: 0.4; }
+    50% { transform: translateY(-40px); opacity: 1; }
+    100% { transform: translateY(0); opacity: 0.4; }
 }
 </style>
 </head>
@@ -145,16 +163,11 @@ button {
 
 <script>
 const noBtn = document.getElementById("no");
-const btnArea = document.querySelector(".buttons");
-
+const area = document.querySelector(".buttons");
 let dodgeCount = 0;
 
-/* Startposition: sichtbar & zentriert */
-let posX = 190;
-let posY = 40;
-
-noBtn.style.left = posX + "px";
-noBtn.style.top  = posY + "px";
+let posX = 240;
+let posY = 15;
 
 function showMessage(text) {
     const msg = document.createElement("div");
@@ -172,14 +185,11 @@ function showMessage(text) {
 function dodge() {
     dodgeCount++;
 
-    const dx = (Math.random() * 2 - 1) * 120;
-    const dy = (Math.random() * 2 - 1) * 60;
+    posX += (Math.random() * 2 - 1) * 120;
+    posY += (Math.random() * 2 - 1) * 30;
 
-    posX += dx;
-    posY += dy;
-
-    const maxX = btnArea.clientWidth - noBtn.offsetWidth;
-    const maxY = btnArea.clientHeight - noBtn.offsetHeight;
+    const maxX = area.clientWidth - noBtn.offsetWidth;
+    const maxY = area.clientHeight - noBtn.offsetHeight;
 
     posX = Math.max(0, Math.min(maxX, posX));
     posY = Math.max(0, Math.min(maxY, posY));
@@ -188,7 +198,7 @@ function dodge() {
     noBtn.style.top  = posY + "px";
 
     if (dodgeCount === 3) {
-        showMessage("😈 Du kannst deinem Schicksal nicht ausweichen… drück endlich auf JA.");
+        showMessage("😈 Du kannst deinem Schicksal nicht ausweichen…");
     }
 }
 
@@ -200,8 +210,8 @@ function yesClicked() {
         <div style="
             color:white;
             text-align:center;
-            font-size:2.8em;
-            text-shadow:0 0 40px gold;
+            font-size:3em;
+            text-shadow:0 0 45px gold;
         ">
             💖 JAAAA 💖<br><br>
             ✨ Nacho und ich, wir freuen uns! ✨
@@ -209,23 +219,32 @@ function yesClicked() {
     `;
 }
 
-/* EFFECTS */
-setInterval(() => {
-    const s = document.createElement("div");
-    s.className = "star";
-    s.style.left = Math.random() * innerWidth + "px";
-    document.body.appendChild(s);
-    setTimeout(() => s.remove(), 6000);
-}, 120);
-
+/* ✨✨✨ MASSIV GLITTER ✨✨✨ */
 setInterval(() => {
     const g = document.createElement("div");
-    g.className = "glitter";
+    g.className = "gold";
     g.style.left = Math.random() * innerWidth + "px";
-    g.style.top = Math.random() * innerHeight + "px";
     document.body.appendChild(g);
-    setTimeout(() => g.remove(), 4000);
+    setTimeout(() => g.remove(), 7000);
 }, 70);
+
+setInterval(() => {
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.style.left = Math.random() * innerWidth + "px";
+    s.style.top = Math.random() * innerHeight + "px";
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 4000);
+}, 50);
+
+setInterval(() => {
+    const c = document.createElement("div");
+    c.className = "glam";
+    c.style.left = Math.random() * innerWidth + "px";
+    c.style.top = Math.random() * innerHeight + "px";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 6000);
+}, 120);
 </script>
 
 </body>
